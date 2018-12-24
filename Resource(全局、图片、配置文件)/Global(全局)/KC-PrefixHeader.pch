@@ -1,0 +1,31 @@
+//
+//  KC-PrefixHeader.pch
+//  SuperFriendsApp
+//
+//  Created by Hawky on 2018/10/11.
+//  Copyright © 2018年 Hawky. All rights reserved.
+//
+
+#ifndef KC_PrefixHeader_pch
+#define KC_PrefixHeader_pch
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "KCExpand.h"
+#import "IQKeyboardManager.h"
+#import "JZNavigationExtension.h"
+#import "MBProgressHUD.h"
+#import "MBProgressHUD+XL.h"
+#import "KCFileManager.h"
+#import "MJRefresh.h"
+#import "SDAutoLayout.h"
+#import "SDWebImageManager.h"
+#import "AFNetworking.h"
+#import "XLNaviView.h"
+
+#import "ContactRLMModel.h"
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* KC_PrefixHeader_pch */
