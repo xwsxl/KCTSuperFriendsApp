@@ -1,0 +1,51 @@
+PODS:
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - HappyDNS (0.3.14)
+  - HYBMasonryAutoCellHeight_SS (2.0.2):
+    - Masonry
+  - Masonry (1.1.0)
+  - Qiniu (7.2.5):
+    - HappyDNS (~> 0.3)
+  - Realm (3.11.2):
+    - Realm/Headers (= 3.11.2)
+  - Realm/Headers (3.11.2)
+  - SocketRocket (0.5.1)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
+
+DEPENDENCIES:
+  - FMDB (~> 2.7.5)
+  - HYBMasonryAutoCellHeight_SS (~> 2.0.2)
+  - Masonry (~> 1.1.0)
+  - Qiniu (~> 7.2.5)
+  - Realm (~> 3.11.1)
+  - SocketRocket (~> 0.5.1)
+  - YYKit (~> 1.0.9)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FMDB
+    - HappyDNS
+    - HYBMasonryAutoCellHeight_SS
+    - Masonry
+    - Qiniu
+    - Realm
+    - SocketRocket
+    - YYKit
+
+SPEC CHECKSUMS:
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  HappyDNS: dc6a164ee81979093123c241c6353bcf0218add6
+  HYBMasonryAutoCellHeight_SS: 6a523d476243268086e2888198c95638d6ad37b7
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  Qiniu: 909b408ee489ea54827e9717be90b94bc9dfbc48
+  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+
+PODFILE CHECKSUM: ddc44c759f9602c1e02d0e9b6a82c46fb7aa1121
+
+COCOAPODS: 1.5.3

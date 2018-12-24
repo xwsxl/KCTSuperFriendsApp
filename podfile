@@ -1,0 +1,25 @@
+# Uncomment the next line to define a global platform for your project
+ platform :ios, '9.0'
+target 'SuperFriendsApp' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for SuperFriendsApp
+  pod 'Qiniu', '~> 7.2.5' 
+  pod 'SocketRocket', '~> 0.5.1'
+  pod 'YYKit', '~> 1.0.9'
+  pod 'Masonry', '~> 1.1.0'
+  pod 'HYBMasonryAutoCellHeight_SS', '~> 2.0.2' 
+  pod 'FMDB', '~> 2.7.5'
+  pod 'Realm', '~> 3.11.1'
+ target 'SuperFriendsAppTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'SuperFriendsAppUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
