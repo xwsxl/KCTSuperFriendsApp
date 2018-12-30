@@ -31,7 +31,11 @@
 /* ****  添加或修改数据  **** */
 +(void)addOrUpdateObject:(RLMObject *)obj
 {
-    [KCTRealmManager addOrUpdateObjects:@[obj]];
+    RLMRealm *realm=[RLMRealm defaultRealm];
+    
+    [realm transactionWithBlock:^{
+        [realm addOrUpdateObject:obj];
+    }];
 }
 +(void)addOrUpdateObjects:(NSArray *)arr
 {
@@ -61,6 +65,77 @@
         [realm deleteAllObjects];
     }];
 }
+
+
+/* ****  删除联系人  **** */
++(void)deleteContactWithAccout:(NSString *)account
+{
+    ContactRLMModel *model=[ContactRLMModel objectsWhere:[NSString stringWithFormat:@"account = '%@'",account]].lastObject;
+    [KCTRealmManager deleteContactWithModel:model];
+}
+/* ****  删除消息  **** */
++(void)deleteMessageWithChatId:(NSString *)chatId
+{
+    MessageRLMModel *model=[MessageRLMModel objectsWhere:[NSString stringWithFormat:@"account = '%@'",chatId]].lastObject;
+    [KCTRealmManager deleteMessageWithModel:model];
+}
+/* ****  删除群组  **** */
++(void)deleteGroupWithGroupNum:(NSString *)groupNum
+{
+    GroupRLMModel *model=[GroupRLMModel objectsWhere:[NSString stringWithFormat:@"account = '%@'",groupNum]].lastObject;
+    [KCTRealmManager deleteGroupWithModel:model];
+}
+/* ****  删除房间  **** */
++(void)deleteRoomWithRoomNo:(NSString *)roomNo
+{
+     RoomRLMModel *model=[RoomRLMModel objectsWhere:[NSString stringWithFormat:@"account = '%@'",roomNo]].lastObject;
+     [KCTRealmManager deleteRoomWithModel:model];
+}
+
+/* ****  删除联系人  **** */
++(void)deleteContactWithModel:(ContactRLMModel *)obj
+{
+    
+    NSString *roomNo=[[[[KCUserDefaultManager getAccount] stringByAppendingString:@"_"] stringByAppendingString:obj.account] md5];
+    RoomRLMModel *Rmodel=[RoomRLMModel objectsWhere:[NSString stringWithFormat:@"roomNo = '%@'",roomNo]].lastObject;
+    if (obj!=nil) {
+        [KCTRealmManager deleteObject:obj];
+    }
+    if (Rmodel!=nil) {
+        [KCTRealmManager deleteObject:Rmodel];
+    }
+    
+}
+/* ****  删除消息  **** */
++(void)deleteMessageWithModel:(MessageRLMModel *)obj
+{
+    
+    if (obj!=nil) {
+        [KCTRealmManager deleteObject:obj];
+    }
+}
+/* ****  删除群组  **** */
++(void)deleteGroupWithModel:(GroupRLMModel *)obj
+{
+    
+    NSString *roomNo=[[[[KCUserDefaultManager getAccount] stringByAppendingString:@"_"] stringByAppendingString:obj.groupNum] md5];
+    RoomRLMModel *Rmodel=[RoomRLMModel objectsWhere:[NSString stringWithFormat:@"roomNo = '%@'",roomNo]].lastObject;
+    if (obj!=nil) {
+        [KCTRealmManager deleteObject:obj];
+    }
+    if (Rmodel!=nil) {
+        [KCTRealmManager deleteObject:Rmodel];
+    }
+}
+/* ****  删除房间  **** */
++(void)deleteRoomWithModel:(RoomRLMModel *)obj
+{
+   
+    if (obj!=nil) {
+        [KCTRealmManager deleteObject:obj];
+    }
+}
+
 
 /* ****  根据联系人信息创建一个roomModel  **** */
 +(RoomRLMModel *)roomModelWithContactModel:(ContactRLMModel *)model

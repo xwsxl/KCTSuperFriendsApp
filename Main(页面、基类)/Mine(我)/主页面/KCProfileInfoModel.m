@@ -19,7 +19,8 @@
              @"phone_Num":@"phoneNum",
              @"account_type":@"accountType",
              @"client_id":@"clientId",
-            // @"":@""
+             @"sig":@"accountSig"
+            
              };
 }
 /* ****  头像地址  **** */

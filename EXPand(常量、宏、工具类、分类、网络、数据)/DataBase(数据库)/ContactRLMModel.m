@@ -17,7 +17,7 @@
 
 +(NSArray<NSString *> *)ignoredProperties
 {
-    return @[@"content"];
+    return @[@"attributedString"];
 }
 -(NSString *)aliasName
 {

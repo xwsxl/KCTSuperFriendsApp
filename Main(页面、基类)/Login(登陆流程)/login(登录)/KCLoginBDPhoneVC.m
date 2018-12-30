@@ -94,7 +94,7 @@
     XLLog(@"- - -");
     UITextField *tf=[self.view viewWithTag:1000];
     NSString *authCode=tf.text;
-    [KCNetWorkManager POST:KNSSTR(@"/userInfoController/updateUserInfo") WithParams:@{@"nickName":[KCUserDefaultManager getNickName],@"portraitUri":[KCUserDefaultManager getHeaderIconStr],@"sex":[KCUserDefaultManager getSex],@"phoneNum":_fillIphoneInfoView.textField.text,@"authCode":authCode} ForSuccess:^(NSDictionary * _Nonnull response) {
+    [KCNetWorkManager POST:KNSSTR(@"/userInfoController/updateUserInfo") WithParams:@{@"nickName":[KCUserDefaultManager getNickName],@"portraitUri":[KCUserDefaultManager getHeaderIconStr],@"sex":@([[KCUserDefaultManager getSex] integerValue]),@"phoneNum":_fillIphoneInfoView.textField.text,@"authCode":authCode} ForSuccess:^(NSDictionary * _Nonnull response) {
         if ([response[@"code"] integerValue]==200) {
             [self qurtButClick];
         }

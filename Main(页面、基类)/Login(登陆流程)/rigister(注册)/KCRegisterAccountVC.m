@@ -112,11 +112,15 @@
             sender.transform = CGAffineTransformMakeScale(1.0, 1.0);
         }];
     } completion:^(BOOL finished) {
+       
+    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         XLLog(@"选择了女孩");
         [KUserDefaults setObject:@"2" forKey:@"tempsex"];
         KCSetVoicePasswordVC *VC=[[KCSetVoicePasswordVC alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
-    }];
+    });
+    
 }
 /*
  * 选择男孩
@@ -124,16 +128,7 @@
 -(void)mailButClick:(UIButton *)sender
 {
     XLLog(@"选择了男孩");
-//    CABasicAnimation *anima = [CABasicAnimation animationWithKeyPath:@"transform.scale"];//同上
-//    anima.fromValue=[NSNumber numberWithFloat:0.8f];
-//    anima.toValue = [NSNumber numberWithFloat:1.2f];
-//    anima.duration = 0.5f;
-//    [sender.layer addAnimation:anima forKey:@"scaleAnimation"];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        XLLog(@"选择了女孩");
-//        KCSetVoicePasswordVC *VC=[[KCSetVoicePasswordVC alloc] init];
-//        [self.navigationController pushViewController:VC animated:YES];
-//    });
+
     sender.transform=CGAffineTransformIdentity;
     
     [UIView animateKeyframesWithDuration:0.5 delay:0 options:0 animations:^{
@@ -149,10 +144,14 @@
         }];
         
     } completion:^(BOOL finished) {
-        XLLog(@"选择了女孩");
+        
+    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       // XLLog(@"选择了");
         [KUserDefaults setObject:@"1" forKey:@"tempsex"];
         KCSetVoicePasswordVC *VC=[[KCSetVoicePasswordVC alloc] init];
         [self.navigationController pushViewController:VC animated:YES];
-    }];
+    });
+    
 }
 @end

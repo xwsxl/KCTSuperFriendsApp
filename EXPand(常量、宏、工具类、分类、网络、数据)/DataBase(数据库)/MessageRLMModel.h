@@ -21,14 +21,28 @@ NS_ASSUME_NONNULL_BEGIN
 /* ****  图片高度  **** */
 @property (nonatomic, assign) CGFloat imageH;
 /* ****  消息类型  **** */
+//SSChatMessageTypeText =1001,
+//SSChatMessageTypeImage,
+//SSChatMessageTypeVoice,
+//SSChatMessageTypeVideo,
+//SSChatMessageTypeLive,
+//SSChatMessageTypeCard,
+//SSChatMessageTypeMap,
+//SSChatMessageTypeNavi,
+//SSChatMessageTypePacket,
+//SSChatMessageTypeWearhelp,
+//SSChatMessageTypeEvent,
+//SSChatMessageTypeUndo,
+//SSChatMessageTypeDelete,
 @property (nonatomic, assign) NSInteger msgType;
 /* ****  消息内容  **** */
 @property (nonatomic, copy) NSString *msg;
 /* ****  消息房间号  **** */
 @property (nonatomic, copy) NSString *roomNo;
-/* ****  消息联系人  **** */
+/* ****  消息发送人  **** */
 @property (nonatomic, strong) ContactRLMModel *contact;
-
+/* ****  忽略的  **** */
+@property (nonatomic, strong) NSMutableAttributedString *attributedString;
 @end
 RLM_ARRAY_TYPE(MessageRLMModel)
 NS_ASSUME_NONNULL_END

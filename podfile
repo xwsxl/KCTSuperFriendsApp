@@ -11,7 +11,8 @@ target 'SuperFriendsApp' do
   pod 'Masonry', '~> 1.1.0'
   pod 'HYBMasonryAutoCellHeight_SS', '~> 2.0.2' 
   pod 'FMDB', '~> 2.7.5'
-  pod 'Realm', '~> 3.11.1'
+  pod 'Realm', '~> 3.11.2'
+  pod 'DZNEmptyDataSet', '~> 1.8.1'
  target 'SuperFriendsAppTests' do
     inherit! :search_paths
     # Pods for testing

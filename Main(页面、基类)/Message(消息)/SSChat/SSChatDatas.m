@@ -87,7 +87,7 @@
     //判断时间是否展示
     message.messageTime =[NSString stringWithFormat:@"%ld",model.timeStamp]; //[NSTimer getChatTimeStr2:[NSTimer getStampWithTime:dic[@"date"]]]
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    if([user valueForKey:message.sessionId]==nil){
+    if(([user valueForKey:message.sessionId]==nil)||([[user valueForKey:message.sessionId] integerValue]==0)){
         [user setValue:@(model.timeStamp) forKey:message.sessionId];
         message.showTime = YES;
     }else{
@@ -171,6 +171,7 @@
     message.messageType  = messageType;
     
     long timeStamp=[NSString getTimeStamp];
+    XLLog(@"%ld",timeStamp);
     //判断时间是否展示
     message.messageTime =[NSString stringWithFormat:@"%ld",timeStamp];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -222,7 +223,7 @@
             message.imageW=message.videoImage.size.width;
         }
             break;
-        case SSChatMessageTypeRedEnvelope:{
+        case SSChatMessageTypePacket:{
             
         }
             break;

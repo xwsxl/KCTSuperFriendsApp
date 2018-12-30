@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /* ****  登录状态  **** */
 +(BOOL)getLoginStatus;
 +(void)setLoginStatus:(BOOL)status;
+/* ****  登录腾讯云  **** */
++(BOOL)getIsTimServer;
++(void)setIsTimServer:(BOOL)status;
 
 /*****  用户名 *****/
 +(NSString *)getAccount;
@@ -27,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /*****  sigen值 *****/
 +(NSString *)getSigen;
 +(void)setSigen:(NSString *)Sigen;
+/*****  腾讯云值 *****/
++(NSString *)getSig;
++(void)setSig:(NSString *)Sig;
 
 /* ****  手机号  **** */
 +(NSString *)getPhoneNum;

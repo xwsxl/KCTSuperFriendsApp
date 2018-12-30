@@ -71,7 +71,7 @@
     [super setDataModel:dataModel];
     ContactRLMModel *model=dataModel;
     self.Model=dataModel;
-    [self.phoneNumLab setText:model.content];
+   // [self.phoneNumLab setText:model.content];
     [self.headIcon sd_setImageWithURL:KNSPHOTOURL(model.portraitUri) placeholderImage:KImage(@"超级好友")];
    
     if ([_cellType isEqualToString:@"2"]) {

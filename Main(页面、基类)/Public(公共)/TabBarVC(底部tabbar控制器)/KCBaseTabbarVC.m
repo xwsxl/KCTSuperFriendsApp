@@ -12,6 +12,7 @@
 #import "KCDiaryVC.h"
 #import "KCProfileVC.h"
 #import "KCLoginBDPhoneVC.h"
+
 @interface KCBaseTabbarVC ()
 
 /**
@@ -100,6 +101,9 @@
                                      };
     [navigationBarAppearance setTitleTextAttributes:textAttributes];
     [UIApplication sharedApplication].statusBarStyle=UIStatusBarStyleLightContent;
+    
+    
+    
 }
 
 /**
@@ -115,6 +119,4 @@
         [navigation presentViewController:viewController animated:animated completion:completion];
     }
 }
-
-
 @end

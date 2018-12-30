@@ -213,7 +213,10 @@
         } ForSuccess:^(NSDictionary * _Nonnull response) {
             
             if ([response[@"code"] integerValue]==200) {
-               // [KCUserDefaultManager setAccount:response[@"data"]];
+               if([urlStr isEqualToString:KNSSTR(@"userController/registerApp")])
+               {
+                   [KCUserDefaultManager setAccount:response[@"data"]];
+               }
                 KCSetVoicePasswordCompletedVC *VC=[[KCSetVoicePasswordCompletedVC alloc] init];
                 VC.voiceStatusOption=0;
                 VC.isReset=self.isReset;

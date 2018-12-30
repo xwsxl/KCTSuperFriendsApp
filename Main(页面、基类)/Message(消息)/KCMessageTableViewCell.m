@@ -94,20 +94,24 @@
         self.unreadNumLab.hidden=YES;
     }
     [self.unreadNumLab setText:[NSString stringWithFormat:@"%d",model.unreadNum]];
-    if (model.chat.msgType==0) {
+    if (model.chat.msgType==1001) {
         [self.lastMessageLab setText:model.chat.msg];
-    }else if (model.chat.msgType==1)
+    }else if (model.chat.msgType==1002)
     {
         [self.lastMessageLab setText:@"[图片]"];
-    }else if (model.chat.msgType==2)
+    }else if (model.chat.msgType==1003)
     {
         [self.lastMessageLab setText:@"[语音]"];
-    }else if (model.chat.msgType==4)
+    }else if (model.chat.msgType==1004)
     {
         [self.lastMessageLab setText:@"[小视频]"];
     }
-    
-    
 }
-
+- (void)setCellAttributeString:(NSMutableAttributedString *)attributeString
+{
+    if (attributeString == nil) {
+        return;
+    }
+    _lastMessageLab.attributedText = attributeString;
+}
 @end

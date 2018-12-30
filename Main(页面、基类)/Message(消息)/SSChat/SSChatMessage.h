@@ -123,17 +123,34 @@ typedef NS_ENUM(NSInteger, SSChatMessageFrom) {
  - SSChatMessageTypeVideo:       发送小视频
  - SSChatMessageTypeRedEnvelope: 发红包
  
+ 
+ int TYPE_TEXT = 1001;
+ int TYPE_IMAGE = 1002;
+ int TYPE_AUDIO = 1003;
+ int TYPE_VIDEO = 1004;
+ int TYPE_LIVE = 1005;
+ int TYPE_CARD = 1006;
+ int TYPE_LOC = 1007;
+ int TYPE_NVI = 1008;
+ int TYPE_PACKET = 1009;
+ int TYPE_WEARHELP = 1010;
+ int TYPE_EVENT = 1011;
+ 
  - SSChatMessageTypeUndo:        撤销的消息
  - SSChatMessageTypeDelete:      删除的消息
  */
 typedef NS_ENUM(NSInteger, SSChatMessageType) {
-    SSChatMessageTypeText =0,
+    SSChatMessageTypeText =1001,
     SSChatMessageTypeImage,
     SSChatMessageTypeVoice,
-    SSChatMessageTypeMap,
     SSChatMessageTypeVideo,
-    SSChatMessageTypeRedEnvelope,
-    
+    SSChatMessageTypeLive,
+    SSChatMessageTypeCard,
+    SSChatMessageTypeMap,
+    SSChatMessageTypeNavi,
+    SSChatMessageTypePacket,
+    SSChatMessageTypeWearhelp,
+    SSChatMessageTypeEvent,
     SSChatMessageTypeUndo,
     SSChatMessageTypeDelete,
 };

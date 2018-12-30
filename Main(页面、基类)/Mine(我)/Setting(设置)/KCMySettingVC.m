@@ -16,7 +16,7 @@
 
 #import "KCMySettingCell.h"
 
-
+#import <ImSDK/ImSDK.h>
 
 
 @interface KCMySettingVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -98,7 +98,17 @@
 {
     XLLog(@"log out");
     [KCUserDefaultManager setLoginStatus:NO];
-    
+//    TIMLoginParam *params=[[TIMLoginParam alloc] init];
+//    params.identifier=[KCUserDefaultManager getAccount];
+//    params.userSig=[KCUserDefaultManager getSig];
+//    params.appidAt3rd=@"1400170299";
+//    [KCUserDefaultManager setIsTimServer:NO];
+    [[TIMManager sharedInstance] logout:^{
+        XLLog(@"tim login success");
+        [KCUserDefaultManager setIsTimServer:YES];
+    } fail:^(int code, NSString *msg) {
+        XLLog(@"tim login fail %@",msg);
+    }];
     KCLoginHomeVC *VC=[[KCLoginHomeVC alloc] init];
     UINavigationController *navi=[[UINavigationController alloc] initWithRootViewController:VC];
     VC.navigationController.navigationBar.hidden=YES;

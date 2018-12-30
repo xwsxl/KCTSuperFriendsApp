@@ -14,18 +14,21 @@
 #import "SSChatKeyBoardInputView.h"
 #import "SSAddImage.h"
 #import "SSChatBaseCell.h"
-#import "SSChatLocationController.h"
 #import "SSImageGroupView.h"
-#import "SSChatMapController.h"
 #import "KCTModelManager.h"
 #import "YYKit.h"
 
+#import "KCChatGroupInfoVC.h"
+#import "SSChatMapController.h"
+#import "SSChatLocationController.h"
 
 #import "SSChatImageCell.h"
 #import "SSChatTextCell.h"
 #import "SSChatVoiceCell.h"
 #import "SSChatMapCell.h"
 #import "SSChatVideoCell.h"
+
+#import <ImSDK/ImSDK.h>
 @interface SSChatController ()<SSChatKeyBoardInputViewDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SSChatBaseCellDelegate>
 
 //承载表单的视图 视图原高度
@@ -62,10 +65,22 @@
     return NO;
 }
 
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    
+    
     NSString *str= (self.model.type==1)?_model.group.groupName:_model.contact.aliasName;
     self.navigationItem.title = str;
+    
+    if (self.model.type==1) {
+        self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"更多" style:UIBarButtonItemStylePlain target:self action:@selector(GroupInfoButClick)];
+    }
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     _mInputView = [SSChatKeyBoardInputView new];
@@ -138,6 +153,10 @@
         if (change!=nil) {
             
             [weakSelf.datas removeAllObjects];
+            if (room!=nil) {
+                [KUserDefaults setObject:@0 forKey:room.roomNo];
+            }
+            
             for (MessageRLMModel *model in results) {
                 [weakSelf.datas addObject:[SSChatDatas receiveMessage:model]];
             }
@@ -150,10 +169,6 @@
             });
             
         }
-        
-       
-        
-        
     }];
     XLLog(@"%@",rs);
     for (MessageRLMModel *model in rs) {
@@ -167,6 +182,21 @@
 
 }
 
+#pragma mark - events
+
+-(void)GroupInfoButClick
+{
+    
+    KCChatGroupInfoVC *VC=[[KCChatGroupInfoVC alloc] init];
+    VC.groupNum=_model.group.groupNum;
+    [self.navigationController pushViewController:VC animated:YES];
+    
+}
+
+
+
+#pragma mark - tableviewDelegate
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     return _datas.count==0?0:1;
@@ -176,7 +206,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
     return 0.01;
-    
+
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

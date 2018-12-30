@@ -318,7 +318,7 @@ API_AVAILABLE(macos(10.4), ios(2.0));
 + (long)getTimeStamp
 {
     NSDate *currentDate = [NSDate date];
-    long timeStamp=(long)[currentDate timeIntervalSince1970]*1000;
+    long timeStamp=(long)([currentDate timeIntervalSince1970]*1000);
     return timeStamp;
 }
 

@@ -15,5 +15,12 @@
     return @"roomNo";
 }
 
+-(int)unreadNum
+{
+    if (!_unreadNum) {
+        _unreadNum=0;
+    }
+    return _unreadNum;
+}
 
 @end

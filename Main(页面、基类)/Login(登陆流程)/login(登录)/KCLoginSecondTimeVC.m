@@ -97,12 +97,14 @@
     [voicePWLoginBut.titleLabel setFont:AppointTextFontSecond];
     [voicePWLoginBut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [voicePWLoginBut addTarget:self action:@selector(voicePasswordLoginButClick:) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.view addSubview:voicePWLoginBut];
     
     UIButton *phoneAuthCodeLoginBut=[UIButton buttonWithType:UIButtonTypeCustom];
-    [phoneAuthCodeLoginBut setFrame:CGRectMake(0, KSafeAreaTopNaviHeight+10+imgwidth+topspace*5+24+30+50, KScreen_Width, 50)];
+    [phoneAuthCodeLoginBut setFrame:CGRectMake(CWidth(15), KSafeAreaTopNaviHeight+10+imgwidth+topspace*5+24+30+50, KScreen_Width-CWidth(30), 50)];
     [phoneAuthCodeLoginBut setTitle:@"手机验证登录" forState:UIControlStateNormal];
+    [phoneAuthCodeLoginBut.layer setBorderWidth:1];
+    [phoneAuthCodeLoginBut.layer setBorderColor:RGB(211, 211, 211).CGColor];
+    [phoneAuthCodeLoginBut.layer setCornerRadius:15.0];
     [phoneAuthCodeLoginBut.titleLabel setFont:AppointTextFontSecond];
     [phoneAuthCodeLoginBut setTitleColor:APPOINTCOLORThird forState:UIControlStateNormal];
     [phoneAuthCodeLoginBut addTarget:self action:@selector(phoneAuthCodeLoginButClick:) forControlEvents:UIControlEventTouchUpInside];

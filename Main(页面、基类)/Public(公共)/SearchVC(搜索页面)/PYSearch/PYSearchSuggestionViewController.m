@@ -109,7 +109,7 @@
         UITableViewCell *cell= [self.dataSource searchSuggestionView:tableView cellForRowAtIndexPath:indexPath];
         if (cell) return cell;
     }
-
+    
     static NSString *cellID = @"PYSearchSuggestionCellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {

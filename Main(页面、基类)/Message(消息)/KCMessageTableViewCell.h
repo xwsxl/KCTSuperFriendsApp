@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KCMessageTableViewCell : KCBaseTableViewCell
-
+- (void)setCellAttributeString:(NSMutableAttributedString *)attributeString;
 @end
 
 NS_ASSUME_NONNULL_END

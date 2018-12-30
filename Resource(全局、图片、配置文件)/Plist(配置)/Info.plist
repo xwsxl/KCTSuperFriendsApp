@@ -29,14 +29,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App需要获取你的位置信息才能使用</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App需要获取你的位置信息才能使用</string>
 	<key>NSCameraUsageDescription</key>
 	<string>App需要你的同意才能访问相机</string>
 	<key>NSContactsUsageDescription</key>
 	<string>App需要你的同意才能访问联系人</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>App需要获取你的位置信息才能使用</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App需要获取你的位置信息才能使用</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>App需要你的同意才能访问麦克风</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -47,6 +47,10 @@
 	<array>
 		<string>MicrosoftYaHei.ttf</string>
 		<string>FZSJT.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

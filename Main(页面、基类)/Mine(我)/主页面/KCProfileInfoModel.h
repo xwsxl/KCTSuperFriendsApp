@@ -33,8 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *created_time;
 /* ****  绑定手机号  **** */
 @property (nonatomic, copy) NSString *phone_Num;
-
-
+/* ****  腾讯云id  **** */
+@property (nonatomic, copy) NSString *sig;
 /* ****  本地联系人头像  **** */
 @property (nonatomic, copy) UIImage *headImage;
 /* ****  是否已经注册  **** */

@@ -237,9 +237,20 @@
     }else if (_type==1)
     {
         /* ****  添加好友  **** */
-        KCTContactsFriendsNotifyVC *VC= [[KCTContactsFriendsNotifyVC alloc] init];
-        VC.dataModel=self.dataModel;
-        [self.navigationController pushViewController:VC animated:YES];
+//        KCTContactsFriendsNotifyVC *VC= [[KCTContactsFriendsNotifyVC alloc] init];
+//        VC.dataModel=self.dataModel;
+//        [self.navigationController pushViewController:VC animated:YES];
+        
+        [KCNetWorkManager POST:KNSSTR(@"/friendController/applyFriend") WithParams:@{@"toAccount":_dataModel.account} ForSuccess:^(NSDictionary * _Nonnull response) {
+            if ([response[@"code"] integerValue]==200) {
+               [MBProgressHUD showMessageWithImageName:@"KCContact-添加成功" message:@"已发送添加邀请"];
+            }else
+            {
+                [MBProgressHUD showMessage:response[@"msg"]];
+            }
+        } AndFaild:^(NSError * _Nonnull error) {
+            
+        }];
     }else
     {
         /* ****  同意添加  **** */

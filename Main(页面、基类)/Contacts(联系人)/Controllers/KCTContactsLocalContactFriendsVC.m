@@ -164,6 +164,7 @@
         cell.dataModel=[self.rigistDataArr objectAtIndex:indexPath.row];
     }else
     {
+        cell.cellType=@"1";
         cell.dataModel=[self.unRigistDataArr objectAtIndex:indexPath.row];
     }
     cell.delegate=self;
@@ -216,14 +217,25 @@
 {
     if ([self.rigistDataArr containsObject:model]) {
         /* ****  添加  **** */
-        KCTContactsFriendsNotifyVC *VC=[[KCTContactsFriendsNotifyVC alloc] init];
-        VC.dataModel=model;
-        [self.navigationController pushViewController:VC animated:YES];
+//        KCTContactsFriendsNotifyVC *VC=[[KCTContactsFriendsNotifyVC alloc] init];
+//        VC.dataModel=model;
+//        [self.navigationController pushViewController:VC animated:YES];
+        [KCNetWorkManager POST:KNSSTR(@"/friendController/applyFriend") WithParams:@{@"toAccount":model.account} ForSuccess:^(NSDictionary * _Nonnull response) {
+            if ([response[@"code"] integerValue]==200) {
+                [MBProgressHUD showMessageWithImageName:@"KCContact-添加成功" message:@"已发送添加邀请"];
+            }else
+            {
+                [MBProgressHUD showMessage:response[@"msg"]];
+            }
+        } AndFaild:^(NSError * _Nonnull error) {
+            
+        }];
     }else
     {
         /* ****  邀请  **** */
         XLLog(@"发送邀请信息");
     }
+  //  NSInteger
 }
 
 #pragma mark - lazy loading

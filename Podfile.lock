@@ -1,4 +1,5 @@
 PODS:
+  - DZNEmptyDataSet (1.8.1)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -17,16 +18,18 @@ PODS:
   - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
+  - DZNEmptyDataSet (~> 1.8.1)
   - FMDB (~> 2.7.5)
   - HYBMasonryAutoCellHeight_SS (~> 2.0.2)
   - Masonry (~> 1.1.0)
   - Qiniu (~> 7.2.5)
-  - Realm (~> 3.11.1)
+  - Realm (~> 3.11.2)
   - SocketRocket (~> 0.5.1)
   - YYKit (~> 1.0.9)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - DZNEmptyDataSet
     - FMDB
     - HappyDNS
     - HYBMasonryAutoCellHeight_SS
@@ -37,6 +40,7 @@ SPEC REPOS:
     - YYKit
 
 SPEC CHECKSUMS:
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HappyDNS: dc6a164ee81979093123c241c6353bcf0218add6
   HYBMasonryAutoCellHeight_SS: 6a523d476243268086e2888198c95638d6ad37b7
@@ -46,6 +50,6 @@ SPEC CHECKSUMS:
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: ddc44c759f9602c1e02d0e9b6a82c46fb7aa1121
+PODFILE CHECKSUM: f8347f9343a0e8d8782ac426ea00850a24bb6c53
 
 COCOAPODS: 1.5.3

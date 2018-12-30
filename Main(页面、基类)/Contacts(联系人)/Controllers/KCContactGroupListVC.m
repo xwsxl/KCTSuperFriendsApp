@@ -46,20 +46,12 @@
 #pragma mark - network
 -(void)getData
 {
-    [KCNetWorkManager Get:KNSSTR(@"/familyChatController/getFamilyChatList") WithParams:@{} ForSuccess:^(NSDictionary * _Nonnull response) {
-        for (NSDictionary *dic in response[@"data"]) {
-             GroupRLMModel *model=[[GroupRLMModel alloc] init];
-             [model mj_setKeyValues:dic];
-            [KCTRealmManager addOrUpdateObject:model];
-        }
-        self.ClassRS=[GroupRLMModel objectsWhere:@"groupType contains '1'"];
-        self.NormalRS=[GroupRLMModel objectsWhere:@"groupType contains '2'"];
-       
-        [self.tableview reloadData];
-//        {"groupPhoto":"default\/default_group.png","groupType":2,"groupName":"072505735群1","groupOwner":"072505735","codeImgUrl":"FsGuOTY_Xk_Baphs9LVxX6oeNS0N","groupNum":"957229"},{"groupPhoto":"default\/default_group.png","groupType":2,"groupName":"072505735群2","groupOwner":"072505735","codeImgUrl":"FiFr_ESoVbwzgmwMXKYEzumyfkKj","groupNum":"159410"},{"groupPhoto":"default\/default_group.png","groupType":2,"groupName":"昵称2群3","groupOwner":"072505735","codeImgUrl":"FoeGQHoYm36Wha1xS8fCAWrL16e8","groupNum":"393074"}
-    } AndFaild:^(NSError * _Nonnull error) {
-        
-    }];
+   
+    self.ClassRS=[GroupRLMModel objectsWhere:@"groupType contains '1'"];
+    self.NormalRS=[GroupRLMModel objectsWhere:@"groupType contains '2'"];
+   
+    [self.tableview reloadData];
+
 }
 #pragma mark - events
 

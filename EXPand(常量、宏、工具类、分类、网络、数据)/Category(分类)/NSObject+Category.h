@@ -15,4 +15,5 @@
  *  @param dict JSON字典/模型字典
  */
 +(void)printPropertyWithDict:(NSDictionary *)dict;
+
 @end

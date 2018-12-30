@@ -14,8 +14,7 @@
 
 /* ****  表视图  **** */
 @property (nonatomic, strong) UITableView *tableview;
-/* ****  数据源  **** */
-@property (nonatomic, strong) NSMutableArray *dataSource;
+
 /* ****  用于存储选中的下标集合  **** */
 @property (nonatomic, copy) NSMutableSet *selectSet;
 /* ****  分区头数据源  **** */
@@ -59,24 +58,7 @@
  */
 -(void)getdatas
 {
-    
-    [KCNetWorkManager POST:KNSSTR(@"/friendController/getFriendList") WithParams:@{} ForSuccess:^(NSDictionary * _Nonnull response) {
-        if ([response[@"code"] integerValue]==200) {
-            NSArray *tempArray=response[@"data"];
-            for (NSDictionary *dic in tempArray) {
-                ContactRLMModel *model=[ContactRLMModel new];
-                [model mj_setKeyValues:dic];
-                [self.dataSource addObject:model];
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self method2];
-            });
-        }
-    } AndFaild:^(NSError * _Nonnull error) {
-        
-    }];
-    
+    [self method2];
 }
 /* ****  排序  **** */
 - (void)method2 {
@@ -121,7 +103,7 @@
             [self.anArrayOfArrays removeObject:tmpArrB[i]];
         }
         //   [self.anArrayOfArrays insertObject:self.dataSource atIndex:0];
-        
+         
         
     }
     [self.tableview reloadData];
@@ -133,16 +115,15 @@
  */
 -(void)sureSelectContacts
 {
-    [self.navigationController popViewControllerAnimated:NO];
+   
     NSMutableArray *tempArr=[NSMutableArray new];
     for (NSIndexPath *indexpath in self.selectSet) {
-        ContactRLMModel *model=self.dataSource[indexpath.row];
+        ContactRLMModel *model=self.anArrayOfArrays[indexpath.section][indexpath.row];
         [tempArr addObject:model];
     }
     if (_sureSelectBlock&&(tempArr.count>0)) {
         self.sureSelectBlock(tempArr);
     }
-    XLLog(@"xll");
 }
 
 #pragma mark - delegate

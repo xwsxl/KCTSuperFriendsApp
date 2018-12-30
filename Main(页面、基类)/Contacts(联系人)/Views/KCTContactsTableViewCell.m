@@ -48,5 +48,11 @@
     [self.nameLab setText:model.aliasName];
     
 }
-
+- (void)setCellAttributeString:(NSMutableAttributedString *)attributeString
+{
+    if (attributeString == nil) {
+        return;
+    }
+    _nameLab.attributedText = attributeString;
+}
 @end

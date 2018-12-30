@@ -12,8 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KCTMessageCreatGroupVC : KCBaseVC
 
+/* ****  数据源  **** */
+@property (nonatomic, strong) NSMutableArray *dataSource;
+
 /* ****  确定选择联系人  **** */
 @property (nonatomic, copy) void (^sureSelectBlock)(NSArray <ContactRLMModel *>*contactsArr);
+
 
 @end
 

@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setDefaultRealmForUser:(NSString *)username;
 
 
+
+
+
 /* ****  添加或修改数据  **** */
 +(void)addOrUpdateObject:(RLMObject *)obj;
 +(void)addOrUpdateObjects:(NSArray *)arr;
@@ -26,8 +29,26 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)deleteObject:(RLMObject *)obj;
 +(void)deleteObjects:(NSArray *)arr;
 
+/* ****  删除联系人  **** */
++(void)deleteContactWithAccout:(NSString *)account;
+/* ****  删除消息  **** */
++(void)deleteMessageWithChatId:(NSString *)chatId;
+/* ****  删除群组  **** */
++(void)deleteGroupWithGroupNum:(NSString *)groupNum;
+/* ****  删除房间  **** */
++(void)deleteRoomWithRoomNo:(NSString *)roomNo;
+/* ****  删除联系人  **** */
++(void)deleteContactWithModel:(ContactRLMModel *)obj;
+/* ****  删除消息  **** */
++(void)deleteMessageWithModel:(MessageRLMModel *)obj;
+/* ****  删除群组  **** */
++(void)deleteGroupWithModel:(GroupRLMModel *)obj;
+/* ****  删除房间  **** */
++(void)deleteRoomWithModel:(RoomRLMModel *)obj;
+
 /* ****  删除所有数据  **** */
 +(void)deleteAllObjects;
+
 
 /* ****  根据联系人信息创建一个roomModel  **** */
 +(RoomRLMModel *)roomModelWithContactModel:(ContactRLMModel *)model;
@@ -35,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(RoomRLMModel *)roomModelWithGroupModel:(GroupRLMModel *)model;
 
 +(ContactRLMModel *)getSelfContact;
+
 @end
 
 NS_ASSUME_NONNULL_END

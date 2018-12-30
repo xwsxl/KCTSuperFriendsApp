@@ -9,11 +9,12 @@
 #import "KCTContactsVC.h"
 #import "KCTContacsAddFriendsVC.h"
 #import "KCTContactsNewFriendsListVC.h"
-#import "KCTSetAliasNameVC.h"
+#import "KCTNormalChangeInfoVC.h"
 #import "KCTContactsSmallPragramVC.h"
 #import "KCContactGroupListVC.h"
 #import "SSChatController.h"
 
+#import "KCTSearchVC.h"
 #import "PYSearch.h"//搜索页面
 #import "KCTContactDetailInfoVC.h"
 
@@ -28,7 +29,7 @@
 
 #define HEADERID @"customHeaderID"
 
-@interface KCTContactsVC ()<UITableViewDelegate,UITableViewDataSource,PYSearchViewControllerDelegate>
+@interface KCTContactsVC ()<UITableViewDelegate,UITableViewDataSource,PYSearchViewControllerDelegate,DZNEmptyDataSetDelegate,DZNEmptyDataSetSource>
 
 /* ****  数据源  **** */
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -84,6 +85,8 @@
     self.tableview=[[UITableView alloc] initWithFrame:CGRectMake(0, KSafeAreaTopNaviHeight+55, KScreen_Width, KScreen_Height-KSafeAreaTopNaviHeight-55-KSafeAreaBottomHeight-49) style:UITableViewStyleGrouped];
     _tableview.delegate=self;
     _tableview.dataSource=self;
+    _tableview.emptyDataSetDelegate=self;
+    _tableview.emptyDataSetSource=self;
     [_tableview registerClass:[KCTContactsTableViewCell class] forCellReuseIdentifier:@"cell"];
     [_tableview registerClass:[KCTContactsMoreCell class] forCellReuseIdentifier:@"morecell"];
     [self.view addSubview:_tableview];
@@ -102,25 +105,17 @@
  */
 -(void)getdatas
 {
+    //RLMResults<Dog *> *tanDogs = [Dog objectsWhere:@"color = 'tan' AND name BEGINSWITH 'B'"];
+    self.dataSource=(NSMutableArray *)[ContactRLMModel objectsWhere:@"accountType == 1 And friendType==0"];
     
-    [KCNetWorkManager POST:KNSSTR(@"/friendController/getFriendList") WithParams:@{@"type":@"1"} ForSuccess:^(NSDictionary * _Nonnull response) {
-        if ([response[@"code"] integerValue]==200) {
-            NSArray *tempArray=response[@"data"];
-            for (NSDictionary *dic in tempArray) {
-                ContactRLMModel *model=[ContactRLMModel new];
-                [model mj_setKeyValues:dic];
-                [self.dataSource addObject:model];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [KCTRealmManager addOrUpdateObjects:self.dataSource];
-                [self method2];
-               // [self.tableview reloadData];
-                
-            });
-        }
-    } AndFaild:^(NSError * _Nonnull error) {
+    WeakSelf
+     RLMNotificationToken *RLMNotificationToken= [[ContactRLMModel objectsWhere:@"accountType == 1 And friendType==0"] addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
+        [weakSelf method2];
         
     }];
+    [self method2];
+    
+
     
 }
 #pragma mark - events
@@ -140,37 +135,36 @@
 -(void)searchBarButtonClick:(UIButton *)sender
 {
     XLLog(@"searchButCLick");
-    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"搜索用户名和手机名" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
-        /* ****  回调  **** */
-        if (searchText.length>0) {
-            [KCNetWorkManager POST:KNSSTR(@"/userController/beforeLogin") WithParams:@{@"account":searchText} ForSuccess:^(NSDictionary * _Nonnull response) {
-                if ([response[@"code"] integerValue]==200) {
-                    ContactRLMModel *model=[ContactRLMModel new];
-                    [model mj_setKeyValues:response[@"data"]];
-                    KCTContactDetailInfoVC *VC=[[KCTContactDetailInfoVC alloc] init];
-                    VC.type=1;
-                    VC.account=model.account;
-                    VC.hidesBottomBarWhenPushed=YES;
-                    [self.navigationController pushViewController:VC animated:YES];
-                }
-            } AndFaild:^(NSError * _Nonnull error) {
-                
-            }];
-        }
-        
-    }];
-    // 3. Set style for popular search and search history
-    searchViewController.hotSearchStyle = PYHotSearchStyleBorderTag;
-    searchViewController.searchHistoryStyle = PYHotSearchStyleDefault;
-    searchViewController.searchBarBackgroundColor=RGBHex(0xf7f7f9);
-    // 4. Set delegate
-    searchViewController.delegate = self;
-    searchViewController.searchViewControllerShowMode = PYSearchViewControllerShowModePush;
-    searchViewController.hidesBottomBarWhenPushed=YES;
-    //    // Push search view controller
-    searchViewController.jz_navigationBarHidden=NO;
-    [self.navigationController pushViewController:searchViewController animated:YES];
-    
+    KCTSearchVC *VC=[[KCTSearchVC alloc] init];
+    WeakSelf;
+    VC.searchType=1;
+    VC.dataSource=(NSArray *)[ContactRLMModel objectsWhere:@"friendType==0"];
+    VC.selectPopElement = ^(id model) {
+        KCTAlertView *alertView=[[KCTAlertView alloc] initCantactsAlertViewWithModel:model];
+        alertView.aliasBlock = ^{
+            XLLog(@"备注");
+        };
+        alertView.messageBlock = ^{
+            XLLog(@"消息");
+            
+            RoomRLMModel *Rmodel= [KCTRealmManager roomModelWithContactModel:model];
+            SSChatController *VC=[[SSChatController alloc] init];
+            VC.model=Rmodel;
+            VC.hidesBottomBarWhenPushed=YES;
+            [weakSelf.navigationController pushViewController:VC animated:YES];
+            
+        };
+        alertView.readOnBlock = ^{
+            XLLog(@"读播");
+        };
+        alertView.videoBlock  = ^{
+            XLLog(@"视频");
+        };
+        [alertView showRSAlertView];
+    };
+    VC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:VC animated:YES];
+ 
 }
 
 /*
@@ -314,7 +308,7 @@
             
         }];
         [self.anArrayOfArrays[indexPath.section-1] removeObject:model];
-        [KCTRealmManager deleteObject:model];
+        [KCTRealmManager deleteContactWithModel:model];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         XLLog(@"点击了删除");
         
@@ -323,8 +317,19 @@
     UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"备注" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         XLLog(@"点击了备注");
         ContactRLMModel *model=self.anArrayOfArrays[indexPath.section-1][indexPath.row];
-        KCTSetAliasNameVC *VC=[[KCTSetAliasNameVC alloc] init];
-        VC.model=model;
+        KCTNormalChangeInfoVC *VC=[[KCTNormalChangeInfoVC alloc] init];
+        VC.sureChangeTextBlock = ^(NSString *text) {
+          
+            [KCNetWorkManager POST:KNSSTR(@"/friendController/updateFriend") WithParams:@{@"friendAccount":model.account,@"aliasName":text} ForSuccess:^(NSDictionary * _Nonnull response) {
+                if ([response[@"code"] integerValue]==200) {
+                    model.aliasName=text;
+                    [KCTRealmManager addOrUpdateObject:model];
+                }
+                [MBProgressHUD showMessage:response[@"msg"]];
+            } AndFaild:^(NSError * _Nonnull error) {
+                
+            }];
+        };
         VC.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:VC animated:YES];
       
@@ -427,7 +432,12 @@
     }
     
 }
+#pragma mark - dznemptydelegate
 
+-(UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return KImage(@"KCContact-None");
+}
 
 #pragma mark - lazy loading
 /*

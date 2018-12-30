@@ -34,4 +34,8 @@
     }
     return _imageH;
 }
++(NSArray<NSString *> *)ignoredProperties
+{
+    return @[@"attributedString"];
+}
 @end

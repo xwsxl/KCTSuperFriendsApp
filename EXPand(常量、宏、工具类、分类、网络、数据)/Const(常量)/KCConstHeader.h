@@ -14,12 +14,14 @@
  * 测试
  */
 static NSString *const ServerUrl=@"http://139.196.210.223:9999/";
+
 //static NSString *const ServerUrl=@"http://192.168.0.115:10001/";
 
 /*
  * 线上
  */
 //static NSString *const ServerUrl=@"https://flytalk.flypaas.com/";
+
 /*
  * 图片服务器地址
  */

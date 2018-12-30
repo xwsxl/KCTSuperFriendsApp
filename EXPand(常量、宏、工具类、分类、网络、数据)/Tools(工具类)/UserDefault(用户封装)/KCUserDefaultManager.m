@@ -23,6 +23,22 @@
     [userDefaults setBool:status forKey:@"loginStatus"];
     [userDefaults synchronize];
 }
+
+/* ****  登录腾讯云  **** */
++(BOOL)getIsTimServer
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL loginStatus=[userDefaults boolForKey:@"IsTimServer"];
+    [userDefaults synchronize];
+    return loginStatus;
+}
++(void)setIsTimServer:(BOOL)status
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:status forKey:@"IsTimServer"];
+    [userDefaults synchronize];
+}
+
 /* ****  用户信息  **** */
 +(KCProfileInfoModel *)getInfoModel
 {
@@ -37,6 +53,7 @@
     model.account_type=[KCUserDefaultManager getAccount_type];
     model.nickName=[KCUserDefaultManager getNickName];
     model.sex=[KCUserDefaultManager getSex];
+    model.sig=[KCUserDefaultManager getSig];
     return model;
 }
 +(void)setInfoModel:(KCProfileInfoModel *)model
@@ -53,6 +70,7 @@
     [KCUserDefaultManager setAccount_type:model.account_type];
     [KCUserDefaultManager setNickName:model.nickName];
     [KCUserDefaultManager setSex:model.sex];
+    [KCUserDefaultManager setSig:model.sig];
     [userDefaults synchronize];
 }
 /*****  用户名 *****/
@@ -87,6 +105,24 @@
 {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:Sigen forKey:@"sigen"];
+    [userDefaults synchronize];
+}
+
+/*****  腾讯云值 *****/
++(NSString *)getSig
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *sigen=[userDefaults stringForKey:@"sig"];
+    [userDefaults synchronize];
+    if (!sigen) {
+        sigen=@"";
+    }
+    return sigen;
+}
++(void)setSig:(NSString *)Sig
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:Sig forKey:@"sig"];
     [userDefaults synchronize];
 }
 /* ****  手机号  **** */

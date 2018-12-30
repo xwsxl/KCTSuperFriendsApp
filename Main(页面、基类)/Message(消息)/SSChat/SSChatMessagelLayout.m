@@ -29,6 +29,7 @@
             
         case SSChatMessageTypeText:
             [self setText];
+                                    
             break;
         case SSChatMessageTypeImage:
             [self setImage];
@@ -42,7 +43,7 @@
         case SSChatMessageTypeVideo:
             [self setVideo];
             break;
-        case SSChatMessageTypeRedEnvelope:
+        case SSChatMessageTypePacket:
             [self setVideo];
             break;
         case SSChatMessageTypeUndo:
@@ -114,7 +115,7 @@
 
 -(void)setImage{
     
-    UIImage *image = _message.image;
+//    UIImage *image = _message.image;
     CGFloat imgWidth  = _message.imageW;
     CGFloat imgHeight = _message.imageH;
     CGFloat imgActualHeight = SSChatImageMaxSize;
@@ -175,8 +176,12 @@
     
     //根据时间设置按钮实际长度
     CGFloat timeLength = SSChatVoiceMaxWidth - SSChatVoiceMinWidth;
-    CGFloat changeLength = timeLength/60;
-    CGFloat currentLength = changeLength*_message.voiceDuration+SSChatVoiceMinWidth;
+    CGFloat changeLength = timeLength/4;
+    NSInteger scale=_message.voiceDuration;
+    if (_message.voiceDuration>4) {
+        scale=4;
+    }
+    CGFloat currentLength = changeLength*scale+SSChatVoiceMinWidth;
     
     if(_message.messageFrom == SSChatMessageFromOther){
         

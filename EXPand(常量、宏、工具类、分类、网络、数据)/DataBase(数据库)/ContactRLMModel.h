@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /* ****  忽略的  **** */
-@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSMutableAttributedString *attributedString;
 @end
 RLM_ARRAY_TYPE(ContactRLMModel)
 NS_ASSUME_NONNULL_END

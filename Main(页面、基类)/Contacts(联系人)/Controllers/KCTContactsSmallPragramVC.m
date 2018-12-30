@@ -41,22 +41,8 @@
 #pragma mark - network
 -(void)getData
 {
-    [KCNetWorkManager POST:KNSSTR(@"/friendController/getFriendList") WithParams:@{@"type":@"2"} ForSuccess:^(NSDictionary * _Nonnull response) {
-        if ([response[@"code"] integerValue]==200) {
-            NSArray *tempArray=response[@"data"];
-            for (NSDictionary *dic in tempArray) {
-                ContactRLMModel *model=[ContactRLMModel new];
-                [model mj_setKeyValues:dic];
-                [self.dataSource addObject:model];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [KCTRealmManager addOrUpdateObjects:self.dataSource];
-                [self.tableview reloadData];
-            });
-        }
-    } AndFaild:^(NSError * _Nonnull error) {
-        
-    }];
+    self.dataSource=(NSMutableArray *)[ContactRLMModel objectsWhere:@"accountType == 2 And friendType==0"];
+    [self.tableview reloadData];
 }
 #pragma mark - events
 

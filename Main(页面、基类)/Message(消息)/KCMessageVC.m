@@ -11,15 +11,17 @@
 #import "SWQRCodeViewController.h"
 #import "SSChatController.h"
 #import "KCTMessageCreatGroupVC.h"
+#import "KCTSearchVC.h"
 
 #import "KCMessageTableViewCell.h"
 #import "KCMessageAddSelectionView.h"
-#import "KCWebSocketManager.h"
 
 #import "KCTRealmManager.h"
 #import "KCTSearchHeaderView.h"
+#import "UIImage+GIF.h"
+#import <GTSDK/GeTuiSdk.h>
 //#import "SWQRCodeViewController.h"
-@interface KCMessageVC ()<UITableViewDelegate,UITableViewDataSource,KCMessageAddSelectionViewDelegate>
+@interface KCMessageVC ()<UITableViewDelegate,UITableViewDataSource,KCMessageAddSelectionViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 {
     BOOL isShowAddFriends;
 }
@@ -46,12 +48,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = YES;
-  //  [self.dataSource addObjectsFromArray:[TestData randomGenerateChatListModel:40]];
     
     self.dataSource = (NSMutableArray *)[[RoomRLMModel allObjects] sortedResultsUsingKeyPath:@"timestamp" ascending:NO];
     self.tableview  = [[UITableView alloc] initWithFrame:CGRectMake(0, KSafeAreaTopNaviHeight+55, KScreen_Width, KScreen_Height-KSafeAreaTopNaviHeight-55-KSafeAreaBottomHeight-49) style:UITableViewStyleGrouped];
     _tableview.delegate=self;
     _tableview.dataSource=self;
+    _tableview.emptyDataSetSource=self;
+    _tableview.emptyDataSetDelegate=self;
     [_tableview registerClass:[KCMessageTableViewCell class] forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableview];
     if ([KCUserDefaultManager getPhoneNum].length==0) {
@@ -60,7 +63,7 @@
         [self.navigationController pushViewController:VC animated:YES];
     }
     
-    [[KCWebSocketManager instance] SRWebSocketOpen];
+    
     NSInteger count=0;
     for (RoomRLMModel *model in self.dataSource) {
         count+=model.unreadNum;
@@ -70,8 +73,15 @@
     self.RLMNotificationToken= [[RoomRLMModel allObjects] addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
         XLLog(@"收到通知了");
         [weakSelf reloadData];
+        
     }];
-    
+    XLLog(@"getuiSdkstatus=%d",[GeTuiSdk status]);
+    if ([GeTuiSdk status] == SdkStatusStoped) {
+        NSLog(@"\n\n>>>[GeTui]:%@\n\n", @"启动APP");
+    } else if ([GeTuiSdk status] == SdkStatusStarted) {
+       // [GeTuiSdk destroy];
+        NSLog(@"\n\n>>>[GeTui]:%@\n\n", @"停止APP");
+    }
 }
 -(void)reloadData
 {
@@ -88,6 +98,7 @@
     [leftBar setTitle:@"超级好友"];
     [leftBar setTitleTextAttributes:@{NSForegroundColorAttributeName:APPOINTCOLORSecond,NSFontAttributeName:AppointTextFontMain} forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem=leftBar;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"超级好友" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     UIBarButtonItem *rightBar=[[UIBarButtonItem alloc] init];
     UIButton *rightIV=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -95,13 +106,14 @@
     [rightIV setImage:KImage(@"KCMessage-添加") forState:UIControlStateNormal];
     [rightBar setCustomView:rightIV];
     [rightIV addTarget:self action:@selector(addFriendsAndMoreButClick:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"超级好友" style:UIBarButtonItemStylePlain target:nil action:nil];
     rightIV.tag=100;
+    
     [self.navigationItem setRightBarButtonItem:rightBar];
     self.searchView=[[KCTSearchHeaderView alloc] initWithFrame:CGRectMake(0, KSafeAreaTopNaviHeight, KScreen_Width, 55)];
     WeakSelf;
     self.searchView.searchButClick = ^{
         XLLog(@"处理点击事件");
+        
         [weakSelf searchBarButtonClick:nil];
     };
     [self.view addSubview:self.searchView];
@@ -129,6 +141,19 @@
 -(void)searchBarButtonClick:(UIButton *)sender
 {
     XLLog(@"searchButCLick");
+    KCTSearchVC *VC=[[KCTSearchVC alloc] init];
+    WeakSelf;
+    VC.searchType=2;
+    VC.dataSource=(NSArray *)[MessageRLMModel objectsWhere:@"msgType = 1001"];
+    VC.selectPopElement = ^(id model) {
+        SSChatController *vc = [[SSChatController alloc] init];
+        vc.model=model;
+        vc.hidesBottomBarWhenPushed = YES;
+        [weakSelf.navigationController pushViewController:vc animated:YES];
+    };
+    VC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:VC animated:YES];
+    
 }
 /*
  * refresh data
@@ -136,8 +161,8 @@
 -(void)refreshHeader
 {
     [super refreshHeader];
-  //  [self.dataSource removeAllObjects];
-   // [self addData];
+    //  [self.dataSource removeAllObjects];
+    // [self addData];
     [self.tableview.mj_header endRefreshing];
 }
 /*
@@ -242,19 +267,41 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.row==0) {
-        SSChatController *vc = [[SSChatController alloc] init];
-        RoomRLMModel *model = self.dataSource[indexPath.row];
-        vc.model=model;
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-//    }else
-//    {
-//        YHChatDetailVC *vc = [[YHChatDetailVC alloc] init];
-//        vc.model = self.dataSource[indexPath.row];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:vc animated:YES];
-//    }
+    SSChatController *vc = [[SSChatController alloc] init];
+    RoomRLMModel *model = self.dataSource[indexPath.row];
+    vc.model=model;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+//2
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return UITableViewCellEditingStyleDelete;
+}
+//3
+//修改编辑按钮文字
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"删除";
+}
+//4
+//点击删除
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    //在这里实现删除操作
+    //删除数据，和删除动画
+    [KCTRealmManager deleteRoomWithModel:[self.dataSource objectAtIndex:indexPath.row]];
+}
+#pragma mark - DZNEmptyDataSource
+/*
+ * 无消息代理 
+ */
+-(UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+{
+    return KImage(@"没有消息");
 }
 
 #pragma mark - KCMessageAddSelectsionViewDelegate
@@ -267,8 +314,11 @@
     XLLog(@"creat group chat");
     [self closeTheAddSelectionView];
     KCTMessageCreatGroupVC *VC=[[KCTMessageCreatGroupVC alloc] init];
+    VC.dataSource=(NSMutableArray *)[ContactRLMModel objectsWhere:@"friendType == 0"];
+    WeakSelf;
     VC.sureSelectBlock = ^(NSArray<ContactRLMModel *> * _Nonnull contactsArr) {
         XLLog(@"%@",contactsArr);
+        [weakSelf.navigationController popViewControllerAnimated:NO];
         [self creatGroupChat:contactsArr];
     };
     VC.hidesBottomBarWhenPushed=YES;
@@ -304,7 +354,7 @@
     for (ContactRLMModel *model in contactsArr) {
         [tempArrM addObject:model.account];
     }
-    WeakSelf;
+//  WeakSelf;
     NSDictionary *params=@{@"groupType":@2,@"members":[tempArrM componentsJoinedByString:@","]};
     [KCNetWorkManager POST:KNSSTR(@"/chatGroupController/createChatGroup") WithParams:params ForSuccess:^(NSDictionary * _Nonnull response) {
         if ([response[@"code"] integerValue]==200) {
